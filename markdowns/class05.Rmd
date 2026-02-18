@@ -1,0 +1,41 @@
+---
+title: "r Sys.Date()"
+author: "Reid Fournier"
+date: "2026-02-16"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Ex: [Indeed Jobs Webpage] <https://www.indeed.com/jobs/> example. 
+
+```{r indeed}
+robotstxt::paths_allowed(
+  paths= "/jobs/",
+  domain = "https://www.indeed.com"
+)
+
+```
+
+Given that this returned 'TRUE' , you are allowed to scrape this webpage 
+ 
+```{r bls_scrape}
+robotstxt::paths_allowed(
+  paths = "/emp/",
+  domain = "https://www.bls.gov/"
+)
+
+req = httr2::request("https://www.bls.gov/emp/tables/fastest-growing-occupations.htm"
+    ) |>
+  httr2::req_user_agent("AN ISA 401 Bot from Miami University") |>
+  httr2::req_perform()
+
+bls_webpage = resp |> httr2::resp_body_raw() |> rvest::read_html()
+bls_webpage
+
+```
+ 
+
